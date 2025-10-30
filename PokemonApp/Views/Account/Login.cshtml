@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="bg-light p-3 w-50 mx-auto rounded-5">
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { returnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4 class="text-center fw-bold m-4">Pokémon App</h4>
+
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="user_email" name="user_email" placeholder="name@example.com">
+                <label for="user_email">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="user_password" name="user_password" placeholder="Password">
+                <label for="user_password">Password</label>
+            </div>
+
+            <br />
+
+
+            <div class="d-grid gap-2 col-4 mx-auto">
+                <button class="btn btn-success rounded-4" type="submit">Sign In</button>
+                <span class="text-center">No account? <a href="@Url.Content("~/Account/Create")">Create one</a></span>
+            </div>            
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger text-center" })
+
+            
+        </div>
+        }
+
+    </div>
+</div>
+
+
+

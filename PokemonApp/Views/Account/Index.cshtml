@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PokemonApp.Models.users>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<main class="mt-5">
+    <h2 class="fw-bold text-center">Users</h2>
+
+
+    <div class="bg-light mt-5 p-3 mx-auto rounded-3">
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Created At
+                </th>
+                <th>
+                    Last Login
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_created_at)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_last_login)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_status)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</main>

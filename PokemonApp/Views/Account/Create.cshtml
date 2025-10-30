@@ -1,0 +1,60 @@
+﻿@model PokemonApp.Models.users
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="bg-light p-3 mx-auto w-50 rounded-5">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4 class="text-center fw-bold m-4">Create new account</h4>
+
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="user_name" name="user_name" placeholder="">
+                <label for="user_name">Name</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="user_email" name="user_email" placeholder="">
+                <label for="user_email">Email address</label>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="user_password" name="user_password" placeholder="">
+                <label for="user_password">Password</label>
+            </div>
+
+
+            <div class="d-flex justify-content-between">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Back", "Index")
+                }
+                else
+                {
+                    @Html.ActionLink("Back", "Login")
+                }
+                <button class="btn btn-success rounded-4 col-4" type="submit">Create account</button>
+            </div>
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger text-center" })
+        </div>
+        }
+
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
