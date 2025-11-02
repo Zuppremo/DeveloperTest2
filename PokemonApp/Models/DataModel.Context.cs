@@ -12,17 +12,17 @@ namespace PokemonApp.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Data.Entity.ModelConfiguration.Conventions;
+
     public partial class Context : DbContext
     {
-        public Context()
-            : base("name=Context")
+        public Context(): base("Context")
         {
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     
         public virtual DbSet<users> users { get; set; }

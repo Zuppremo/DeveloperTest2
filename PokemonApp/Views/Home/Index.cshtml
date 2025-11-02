@@ -2,10 +2,9 @@
     ViewBag.Title = "Pokémon List";
 }
 
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <main class="mt-5">
     <h2 class="fw-bold text-center">Pokémon List</h2>
-
 
     <div class="w-50 mx-auto mt-4">
         <div class="input-group">
@@ -17,12 +16,38 @@
     </div>
 
     <div class="bg-light mt-5 p-3 mx-auto rounded-3">
-        <h5 class="fw-bold">Favorites 0/10</h5>
-
         <div class="pokemon-cards-container mt-4">
-            <p><b>151</b> Pokémon Cards Goes Here</p>
-        </div>        
-    </div>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col">
+                            <div class="card shadow-sm p-3 h-100" style="border-radius: 20px;">
+                                <div class="d-flex">
+                                    <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center"
+                                         style="width: 120px; height: 120px;">
+                                        <img src=@item.ImageUrl>
+                                    </div>
+                                    <div class="flex-grow-1 position-relative">
+                                        <button class="btn p-0 border-0 position-absolute top-0 end-0">
+                                            <i class="far fa-heart"></i> <!-- Empty heart -->
+                                            <!-- favorite Heart <i class="fas fa-heart" style="color: #ff0000;"></i>-->
+                                        </button>
+                                        <h5 class="fw-bold mt-3 mb-2">@item.Name</h5>
+                                        <div class="mt-2 d-flex-wrap gap-2">
+                                            @foreach (var type in item.Types)
+                                            {
+                                                <span class="badge rounded-pill bg-secondary-subtle text-dark px-3">@type</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
 </main>
 
 

@@ -11,9 +11,11 @@ namespace PokemonApp.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class users
     {
+        [Key]
         public int user_id { get; set; }
         public string user_name { get; set; }
         public string user_email { get; set; }

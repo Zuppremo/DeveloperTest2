@@ -34,10 +34,12 @@ namespace PokemonApp.Controllers
         [AllowAnonymous]
         public ActionResult Login(string user_email, string user_password, string returnUrl)
         {
+            db.Database.Connection.OpenAsync();
             if (!string.IsNullOrEmpty(user_email) && !string.IsNullOrEmpty(user_password))
             {
                 try
                 {
+                    db.Database.Connection.OpenAsync();
                     users user = db.users.Where(x => x.user_email == user_email).FirstOrDefault();
 
                     if (user != null)
@@ -76,6 +78,7 @@ namespace PokemonApp.Controllers
                 }
                 catch (Exception)
                 {
+                    db.Database.Connection.Close();
                     throw;
                 }
             }
@@ -83,7 +86,7 @@ namespace PokemonApp.Controllers
             {
                 ModelState.AddModelError("", "Please fill all the fields.");
             }
-
+            db.Database.Connection.Close();
             return View();
         }
 
