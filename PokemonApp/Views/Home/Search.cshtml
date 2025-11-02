@@ -1,25 +1,31 @@
 ﻿@{
-    ViewBag.Title = "Favorites";
+    ViewBag.Title = "Pokémon List";
 }
 
+@Html.AntiForgeryToken()
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <main class="mt-5">
-    <h2 id="favorites-count" class="fw-bold text-center">Favorites (@Model.Count/10)</h2>
+    <h2 class="fw-bold text-center">Pokémon List</h2>
+
+    <div class="w-50 mx-auto mt-4">
+        @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+        {
+            <div class="input-group">
+                <input type="text" name="searchString" class="form-control bg-light border-secondary rounded-start-pill border-end-0" placeholder="Search Pokémon..." />
+                <button class="btn btn-light border-secondary rounded-end-pill border-start-0" type="submit" id="button-addon2">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        }
+    </div>
     <div class="bg-light mt-5 p-3 mx-auto rounded-3">
+        <h5 class="fw-bold d-flex align-items-center justify-content-center" id="favorites-count">@TempData["CurrentFavorites"]</h5>
         <div class="pokemon-cards-container mt-4">
             <div class="container">
-                @if (Model.Count <= 0)
-                {
-                    <div class="text-center py-5">
-                        <h1>Aun no tienes pokemon favoritos...</h1>
-                        <h2> usa el corazón para agregar los que quieras</h2>
-                    </div>
-                    return;
-                }
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    @Html.AntiForgeryToken()
                     @foreach (var item in Model)
                     {
-                        <div class="col" id="@item.Id">
+                        <div class="col">
                             <div class="card shadow-sm p-3 h-100" style="border-radius: 20px;">
                                 <div class="d-flex">
                                     <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center"
@@ -31,7 +37,7 @@
                                                 class="btn-fav p-0 border-0 bg-transparent position-absolute top-0 end-0"
                                                 data-pokemonid="@item.Id"
                                                 data-favorited="@item.IsFavorite">
-                                            <i class="fas fa-heart" style="color: #ff0000;"></i>
+                                            <i id="heart-icon" style="@(item.IsFavorite ? "color: #ff0000;" : "color: #ff0000")" class="@(item.IsFavorite ? "fas" : "far") fa-heart"></i>
                                         </button>
                                         <h5 class="fw-bold mt-3 mb-2">@item.Name</h5>
                                         <div class="mt-2 d-flex-wrap gap-2">
@@ -48,8 +54,24 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="modal fade" id="pokemonLimitModal" data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Lo siento!</h5>
+                    </div>
+                    <div class="modal-body">
+                        No puedes añadir mas de 10 pokemones favoritos a tu cuenta
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </main>
+
 
 @section Scripts {
     <script>
@@ -60,7 +82,7 @@
             var isFavorited = (btn.data("favorited") === true || btn.data("favorited") === "True");
 
             $.ajax({
-                url: "@Url.Action("TryRemoveFavoriteAsync", "Home")",
+                url: isFavorited ? "@Url.Action("TryRemoveFavoriteAsync", "Home")" : "@Url.Action("TryAddFavoriteAsync", "Home")",
                 type: "POST",
                 data: {
                     pokemonId: pokemonId,
@@ -69,12 +91,16 @@
                 success: function (response)
                 {
                     if (!response.success)
+                    {
+                        var modalPopup = new bootstrap.Modal(document.getElementById("pokemonLimitModal"), {});
+                        modalPopup.show();
+                        $('#myInput').trigger('focus')
                         return;
-                    const element = document.getElementById(pokemonId);
-                    element.remove();
+                    }
+                    icon.toggleClass("fas far");
+                    btn.data("favorited", !isFavorited);
                 },
             });
         })
     </script>
 }
-

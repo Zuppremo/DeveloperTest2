@@ -8,12 +8,15 @@
     <h2 class="fw-bold text-center">Pokémon List</h2>
 
     <div class="w-50 mx-auto mt-4">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-secondary rounded-start-pill border-end-0" placeholder="Search Pokémon ...">
-            <button class="btn btn-light border-secondary rounded-end-pill border-start-0" type="button" id="button-addon2">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
+        @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+        {
+            <div class="input-group">
+                <input type="text" name="searchString" class="form-control bg-light border-secondary rounded-start-pill border-end-0" placeholder="Search Pokémon..."/>
+                <button class="btn btn-light border-secondary rounded-end-pill border-start-0" type="submit" id="button-addon2">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        }
     </div>
     <div class="bg-light mt-5 p-3 mx-auto rounded-3">
         <h5 class="fw-bold d-flex align-items-center justify-content-center" id="favorites-count">@TempData["CurrentFavorites"]</h5>

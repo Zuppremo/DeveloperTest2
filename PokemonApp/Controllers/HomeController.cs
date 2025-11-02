@@ -47,6 +47,20 @@ namespace PokemonApp.Controllers
             return View(pokemons);
         }
 
+        [HttpGet]
+        public ActionResult Search(string searchString)
+        {
+            var totalPokemons = cache.Get(CACHE_POKEMONS_KEY) as List<Pokemon>;
+
+            var foundPokemons = new List<Pokemon>();
+            if (!string.IsNullOrEmpty(searchString))
+                foundPokemons = totalPokemons.Where(p => p.Name.Contains(searchString)).ToList();
+            else
+                return RedirectToAction("Index");
+
+            return View(foundPokemons);
+        }
+
         public ActionResult Favorites()
         {
             currentUser = FindUserInCookies();
