@@ -16,7 +16,8 @@ namespace PokemonApp.Models
 
     public partial class Context : DbContext
     {
-        public Context(): base("Context")
+        public Context()
+            : base("name=Context")
         {
         }
     
@@ -26,5 +27,6 @@ namespace PokemonApp.Models
         }
     
         public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<favorites> favorites { get; set; }
     }
 }

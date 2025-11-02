@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\jmose007\source\repos\PokemonApp\PokemonApp\Models\DataModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Deybi\Documents\TechnicalTest\DeveloperTest2\PokemonApp\Models\DataModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

@@ -11,11 +11,15 @@ namespace PokemonApp.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class users
     {
-        [Key]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public users()
+        {
+            this.favorites = new HashSet<favorites>();
+        }
+    
         public int user_id { get; set; }
         public string user_name { get; set; }
         public string user_email { get; set; }
@@ -23,5 +27,8 @@ namespace PokemonApp.Models
         public System.DateTime user_created_at { get; set; }
         public Nullable<System.DateTime> user_last_login { get; set; }
         public bool user_status { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<favorites> favorites { get; set; }
     }
 }
