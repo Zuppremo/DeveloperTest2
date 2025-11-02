@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="bg-light mt-5 p-3 mx-auto rounded-3">
-        <h5 class="fw-bold" id="favorites-count">0</h5>
+        <h5 class="fw-bold d-flex align-items-center justify-content-center" id="favorites-count">@TempData["CurrentFavorites"]</h5>
         <div class="pokemon-cards-container mt-4">
             <div class="container">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -56,13 +56,13 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Lo siento!</h5>
                     </div>
                     <div class="modal-body">
-                        ...
+                        No puedes añadir mas de 10 pokemones favoritos a tu cuenta
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
