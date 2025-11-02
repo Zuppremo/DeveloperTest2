@@ -54,7 +54,7 @@ modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 ```
 Keep in mind that the connection can be seen in the Visual Studio Server Explorer ensure that you are connected to the database here!
 
-![App Screenshot](https://imgur.com/LlylV9v)
+![App Screenshot](https://imgur.com/LlylV9v.png)
 
 
 After that you should be able to create an user in the database, and after login it will show you all the pokemons as expected
@@ -63,22 +63,22 @@ After that you should be able to create an user in the database, and after login
 
     
 ## Demo
-
 https://youtu.be/HrNgNon6Qxo
+
 ## Documentation
 
 Database Entity Diagram
 
-![ERD Diagram](https://imgur.com/clA8i5V)
+![ERD Diagram](https://imgur.com/clA8i5V.png)
 
 
 ## Screenshots
 
-![Pokemon List](https://imgur.com/49bhjMU)
-![No favorites](https://imgur.com/nsgk1sx)
-![Favorites List](https://imgur.com/SMGW7Z7)
-![Can't add favorite](https://imgur.com/80t07Qd)
-![Find Pokemon](https://imgur.com/BH4dDrC)
+![Pokemon List](https://imgur.com/49bhjMU.png)
+![No favorites](https://imgur.com/nsgk1sx.png)
+![Favorites List](https://imgur.com/SMGW7Z7.png)
+![Can't add favorite](https://imgur.com/80t07Qd.png)
+![Find Pokemon](https://imgur.com/BH4dDrC.png)
 
 
 ## Authors
