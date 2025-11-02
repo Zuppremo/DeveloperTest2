@@ -2,6 +2,7 @@
     ViewBag.Title = "Pokémon List";
 }
 
+@Html.AntiForgeryToken()
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <main class="mt-5">
     <h2 class="fw-bold text-center">Pokémon List</h2>
@@ -14,8 +15,8 @@
             </button>
         </div>
     </div>
-
     <div class="bg-light mt-5 p-3 mx-auto rounded-3">
+        <h5 class="fw-bold" id="favorites-count">0</h5>
         <div class="pokemon-cards-container mt-4">
             <div class="container">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -29,21 +30,11 @@
                                         <img src=@item.ImageUrl>
                                     </div>
                                     <div class="flex-grow-1 position-relative">
-                                        <button class="btn p-0 border-0 position-absolute top-0 end-0">
-                                            @if (@item.IsFavorite)
-                                            {
-                                                <i class="fas fa-heart" style="color: #ff0000;"></i>
-                                            }
-                                            else
-                                            {
-                                                using (Html.BeginForm("TryAddFavoriteAsync", "Home", FormMethod.Post))
-                                                {
-                                                    @Html.Hidden("pokemonId", (int)@item.Id)
-                                                    <button type="submit" class="btn p-0 border-0 bg-transparent">
-                                                        <i class="far fa-heart"></i>
-                                                    </button>
-                                                }
-                                            }
+                                        <button type="button"
+                                                class="btn-fav p-0 border-0 bg-transparent position-absolute top-0 end-0"
+                                                data-pokemonid="@item.Id"
+                                                data-favorited="@item.IsFavorite">
+                                            <i id="heart-icon" style="@(item.IsFavorite ? "color: #ff0000;" : "color: #ff0000")" class="@(item.IsFavorite ? "fas" : "far") fa-heart"></i>
                                         </button>
                                         <h5 class="fw-bold mt-3 mb-2">@item.Name</h5>
                                         <div class="mt-2 d-flex-wrap gap-2">
@@ -60,6 +51,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="pokemonLimitModal"  data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </main>
 
 
+@section Scripts {
+    <script>
+        $(document).on("click", ".btn-fav", function () {
+            var btn = $(this);
+            var icon = btn.find("i");
+            var pokemonId = btn.data("pokemonid");
+            var isFavorited = (btn.data("favorited") === true || btn.data("favorited") === "True");
+
+            $.ajax({
+                url: isFavorited ? "@Url.Action("TryRemoveFavoriteAsync", "Home")" : "@Url.Action("TryAddFavoriteAsync", "Home")",
+                type: "POST",
+                data: {
+                    pokemonId: pokemonId,
+                    __RequestVerificationToken: $('input[name ="__RequestVerificationToken"]').val()
+                },
+                success: function (response)
+                {
+                    if (!response.success)
+                    {
+                        var modalPopup = new bootstrap.Modal(document.getElementById("pokemonLimitModal"), {});
+                        modalPopup.show();
+                        $('#myInput').trigger('focus')
+                        return;
+                    }
+                    icon.toggleClass("fas far");
+                    btn.data("favorited", !isFavorited);
+                },
+            });
+        })
+    </script>
+}

@@ -3,7 +3,7 @@
 }
 
 <main class="mt-5">
-    <h2 class="fw-bold text-center">Favorites (0/10)</h2>
+    <h2 class="fw-bold text-center">Favorites (@Model.Count/10)</h2>
     <div class="w-50 mx-auto mt-4">
         <div class="input-group">
             <input type="text" class="form-control bg-light border-secondary rounded-start-pill border-end-0" placeholder="Search Pokémon ...">
@@ -23,40 +23,33 @@
                     </div>
                     return;
                 }
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach (var item in Model)
+                {
                     <div class="col">
-                        @foreach (var item in Model)
-                        {
-                            <div class="card shadow-sm p-3 h-100" style="border-radius: 20px;">
-                                <div class="d-flex">
-                                    <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center"
-                                         style="width: 120px; height: 120px;">
-                                        <img src=@item.ImageUrl>
-                                    </div>
-                                    <div class="flex-grow-1 position-relative">
-                                        <button class="btn p-0 border-0 position-absolute top-0 end-0">
-                                            @if (item.IsFavorite)
-                                            {
-                                                <i class="fas fa-heart" style="color: #ff0000;"></i>
-                                            }
-                                            else
-                                            {
-                                                <i class="far fa-heart"></i>
-                                            }
-                                        </button>
-                                        <h5 class="fw-bold mt-3 mb-2">@item.Name</h5>
-                                        <div class="mt-2 d-flex-wrap gap-2">
-                                            @foreach (var type in item.Types)
-                                            {
-                                                <span class="badge rounded-pill bg-secondary-subtle text-dark px-3">@type</span>
-                                            }
-                                        </div>
+                        <div class="card shadow-sm p-3 h-100" style="border-radius: 20px;">
+                            <div class="d-flex">
+                                <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center"
+                                     style="width: 120px; height: 120px;">
+                                    <img src=@item.ImageUrl>
+                                </div>
+                                <div class="flex-grow-1 position-relative">
+                                    <button class="btn p-0 border-0 position-absolute top-0 end-0">
+                                            <i class="fas fa-heart" style="color: #ff0000;"></i>
+                                    </button>
+                                    <h5 class="fw-bold mt-3 mb-2">@item.Name</h5>
+                                    <div class="mt-2 d-flex-wrap gap-2">
+                                        @foreach (var type in item.Types)
+                                        {
+                                            <span class="badge rounded-pill bg-secondary-subtle text-dark px-3">@type</span>
+                                        }
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
                     </div>
-                </div>
+                }
+            </div>
             </div>
         </div>
     </div>

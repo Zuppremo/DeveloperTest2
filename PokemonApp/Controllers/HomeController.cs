@@ -22,7 +22,6 @@ namespace PokemonApp.Controllers
         private Context db = new Context();
         private users currentUser;
 
-        [OutputCache(Duration = int.MaxValue, VaryByParam = "none")]
         public async Task<ActionResult> Index()
         {
             currentUser = FindUserInCookies();
@@ -34,6 +33,15 @@ namespace PokemonApp.Controllers
                 pokemons = pokemonService.Pokemons;
                 cache.Set(CACHE_POKEMONS_KEY, pokemons, DateTimeOffset.UtcNow.AddHours(24));
             }
+            var favoriteIds = db.favorites.Where(f => f.user_id == currentUser.user_id).Select(f => f.pokemon_id).ToList();
+            var favoritePokemons = pokemons.Where(p => favoriteIds.Contains(p.Id)).ToList();
+
+            foreach(var pokemon in pokemons)
+                pokemon.IsFavorite = false;
+
+            foreach (var pokemon in favoritePokemons)
+                pokemon.IsFavorite = true;
+
             return View(pokemons);
         }
 
@@ -51,32 +59,35 @@ namespace PokemonApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> TryAddFavoriteAsync(int pokemonId)
         {
             currentUser = FindUserInCookies();
-            var currentCount = await db.favorites.Where(f => f.user_id == currentUser.user_id && f.pokemon_id == pokemonId).CountAsync();
+            int targetUserId = currentUser.user_id;
+            int userCountLimit = db.favorites.Count(u => u.user_id == targetUserId);
 
-            if (currentCount >= 10)
-                return  Json(new { success = false, message = "Cant save the data because you have more than maximum favorites pokemons or it is the same " }); ;
+            if (userCountLimit >= 10)
+                return Json(new { success = false, message = "You can only have 10 favorite pokemon!" });
 
             var favorite = new favorites { user_id = currentUser.user_id, pokemon_id = pokemonId };
             db.favorites.Add(favorite);
             await db.SaveChangesAsync();
-            return Json(new { success = true, message = "Data saved successfully!" }); ;
+            return Json(new { success = true, message = "Added to favorites!" }); ;
         }
 
         [HttpPost]
-        public async Task<bool> TryRemoveFavoriteAsync(int pokemonId)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> TryRemoveFavoriteAsync(int pokemonId)
         {
             currentUser = FindUserInCookies();
-            var currentCount = await db.favorites.Where(f => f.user_id == currentUser.user_id && f.pokemon_id == pokemonId).CountAsync();
-            if (currentCount <= 0)
-                return false;
-
             var favorite = await db.favorites.Where(f => f.user_id == currentUser.user_id && f.pokemon_id == pokemonId).FirstOrDefaultAsync();
+
+            if (favorite == null)
+                return Json(new { success = false, message = "That favorite doesnt exist in our database!" });
+
             db.favorites.Remove(favorite);
             await db.SaveChangesAsync();
-            return true;
+            return Json(new { success = true, message = "removed from Favorites!" });
         }
 
         private users FindUserInCookies()
