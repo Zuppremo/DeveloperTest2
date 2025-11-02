@@ -144,6 +144,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\favorites.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Pokemon.cs" />
     <Compile Include="Models\users.cs">
       <DependentUpon>DataModel.tt</DependentUpon>

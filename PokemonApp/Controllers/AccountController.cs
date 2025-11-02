@@ -55,6 +55,7 @@ namespace PokemonApp.Controllers
                                 db.SaveChanges();
 
                                 FormsAuthentication.SetAuthCookie(user_email, createPersistentCookie: true);
+                                FormsAuthentication.SetAuthCookie(user.user_id.ToString(), createPersistentCookie: true);
                                 if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/") && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\") && returnUrl != "/Account/SignOut")
                                 {
                                     return Redirect(returnUrl);
